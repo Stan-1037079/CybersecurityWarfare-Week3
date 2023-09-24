@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Studenten Registratie</title>
+    <script> src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js%22%3E</script>
+</head>
+<body>
+    <h1>Studentregistratie</h1>
+    <form id="registration-form">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id"><br><br>
+        <label for="password">Wachtwoord:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <label for="firstname">Voornaam:</label>
+        <input type="text" id="firstname" name="firstname"><br><br>
+        <label for="lastname">Achternaam:</label>
+        <input type="text" id="lastname" name="lastname"><br><br>
+        <label for="role">Rol:</label>
+        <input type="text" id="role" name="role"><br><br>
+        <label for="class">Klas:</label>
+        <input type="text" id="class" name="class"><br><br>
+        <input type="submit" value="Registreren">
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#registration-form').submit(function(e) {
+                e.preventDefault();
+
+                var id = $('#id').val();
+                var password = $('#password').val();
+                var firstname = $('#firstname').val();
+                var lastname = $('#lastname').val();
+                var role = $('#role').val();
+                var class = $('#class').val();
+
+                $.ajax({
+                    url: '/register',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        password: password,
+                        firstname: firstname,
+                        lastname: lastname,
+                        role: role,
+                        class: class
+                    },
+                    success: function(response) {
+                        alert(response);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

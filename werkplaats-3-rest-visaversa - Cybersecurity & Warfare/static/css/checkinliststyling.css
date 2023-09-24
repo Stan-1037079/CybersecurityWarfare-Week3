@@ -1,0 +1,10 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d30f4c;
+    text-align: center;
+    color: #fff;
+  }
+  #table-container {
+    margin: auto;
+    width: 20%;
+  }

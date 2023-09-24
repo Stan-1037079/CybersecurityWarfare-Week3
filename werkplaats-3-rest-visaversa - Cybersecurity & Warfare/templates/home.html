@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage/Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style_home.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    #chartContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 500px;
+    }
+
+    #myChart {
+      max-width: 800px;
+      max-height: 400px;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <img src="/static/images/hr_logo2.png">
+  </div>
+  <h1>Welkom {{username}}!</h1>
+  <a href='/calendarstudentadmin'><button>Go to Calendar! (Students)</button></a>
+  <a href='/calendarteacheradmin'><button>Go to Calendar! (Teachers)</button></a>
+  <!--<a href='/checkinlist'><button>Check in list (Teachers)</button></a>-->
+  <a href='/logout'><button>Log out</button></a>
+  <br><br>    
+  <form action="/search" method="GET">
+    <input type="text" name="query" placeholder="Search for people...">
+    <button type="submit">Search</button>
+  </form>
+  <p id="time"></p>
+  <p id="date"></p>
+  <h1>Aantal studenten/docenten: {{ student_count }}</h1>
+  <div id="chartContainer">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script>
+    // Dit creëert de grafiek
+    var ctx = document.getElementById('myChart').getContext('2d');
+  
+    // Haal data op van de endpoint
+    fetch('/chart-data')
+      .then(response => response.json())
+      .then(data => {
+        // Maak een array om de labels met aantallen op te slaan
+        var labelsWithCount = data.labels.map((label, index) => {
+          if (label === 'Teachers') {
+            return label;
+          } else {
+            return label + " (" + data.student_counts[index] + ")";
+          }
+        });
+
+        var chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labelsWithCount,
+            datasets: [{
+              label: 'Students',
+              data: data.student_counts,
+              backgroundColor: 'rgba(0, 123, 255, 0.5)',
+              borderColor: 'rgba(0, 123, 255, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Teachers',
+              data: data.teacher_counts,
+              backgroundColor: 'rgba(255, 255, 255, 0.5)',
+              borderColor: 'rgba(255, 255, 255, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                precision: 0
+              }
+            }
+          }
+        });
+      });
+  </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/time.js') }}"></script>
+</body>
+</html>

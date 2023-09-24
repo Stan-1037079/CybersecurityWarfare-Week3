@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <link href='/static/css/event_details.css' rel='stylesheet'>
+  <title>Event Details</title>
+</head>
+<body>
+  
+  
+  <h1>Event Details for ID {{event_id}}</h1>
+  <strong>Title:</strong> <span id="event-title"></span><br>
+  <strong>Location:</strong> <span id="event-location"></span><br>
+    <strong>Start Time:</strong> <span id="event-start"></span><br>
+    <strong>End Time:</strong> <span id="event-end"></span><br>
+    <strong>Link:</strong> <span id="event-link"></span>
+
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var eventTitle = urlParams.get('title');
+    var eventLocation = urlParams.get('location')
+    var eventStart = urlParams.get('start');
+    var eventEnd = urlParams.get('end');
+    var eventLink = urlParams.get('link');
+    
+    document.getElementById('event-title').textContent = eventTitle;
+    document.getElementById('event-location').textContent = eventLocation;
+    document.getElementById('event-start').textContent = eventStart;
+    document.getElementById('event-end').textContent = eventEnd;
+    document.getElementById('event-link').textContent = eventLink;
+  </script>
+  <br><br>
+  {% block content %}
+    <form method="POST" action="/delete_event">
+      <input type="hidden" name="event_id" value="{{ event_id }}">
+      <button type="submit" class="btn btn-danger" onclick="redirectToAdmin()">Delete ID {{ event_id }}</button>
+
+    <script>
+    function redirectToAdmin() {
+        window.location.href = '/calendarteacheradmin.html';
+    }
+    </script>
+    </form>
+{% endblock %}
+
+  <button onclick="window.location.href = '/calendarteacheradmin';">Back to Calendar</button> 
+  <button onclick="goBack()">Go Back</button>
+    <script>
+    function goBack() {
+      window.history.back();}
+    </script>
+  
+</body>
+</html>

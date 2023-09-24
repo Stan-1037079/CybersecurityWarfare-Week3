@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style_login.css') }}">
+</head>
+<body>
+  <div class="logo">
+    <img src="/static/images/hr_logo2.png">
+  </div>
+
+  <h1>Login</h1>
+  {% if error %}
+  <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  <form action="{{ url_for('login') }}" method="post">
+    <p><input type="text" name="username" placeholder="Username"></p>
+    <p><input type="password" name="password" placeholder="Password"></p>
+    <p><input type="submit" value="Login"></p>
+  </form>
+
+  <p>Don't have an account? <a href="https://www.hogeschoolrotterdam.nl">Apply for one of our studies!</a></p>
+  
+</body>
+</html> 

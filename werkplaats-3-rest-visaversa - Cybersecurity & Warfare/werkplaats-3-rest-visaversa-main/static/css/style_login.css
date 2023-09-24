@@ -1,0 +1,28 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: white;
+  background-color: #d30f4c;
+  text-align: center;
+  margin: 150px;
+}
+
+input {
+  width: 50%;
+  border: 1px solid #cccccc;
+  padding: 10px 20px;
+  margin: 10px 0;
+  box-sizing: border-box;
+}
+
+.error {
+  color: white;
+}
+
+.logo {
+  width: 5px;
+  height: 5px;
+  float: left;
+  margin: -150px;
+}

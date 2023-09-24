@@ -1,0 +1,12 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #d30f4c;
+  text-align: center;
+  color: white;
+}
+
+.logo {
+  margin: -8px;
+  max-height: 50px;
+  text-align: left;
+}

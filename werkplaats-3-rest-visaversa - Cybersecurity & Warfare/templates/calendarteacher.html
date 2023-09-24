@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar App</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/calendarstyling.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css' media='print' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js'></script>
+    <script>
+        $(document).ready(function() {
+            var calendar = $('#calendar').fullCalendar({
+                editable:true,
+                header:{
+                    left:'prev,next today',
+                    center:'title',
+                    right:'month,agendaWeek,agendaDay'
+                },
+                events: '/api/get_events',
+                selectable:true,
+                selectHelper:true,
+                select: function(start, end, allDay)
+            {
+                var id = event.id;
+                var title = event.title;
+                var location = event.location;
+                var start = moment(event.start).format('YYYY-MM-DD HH:mm:ss');
+                var end = moment(event.end).format('YYYY-MM-DD HH:mm:ss');
+                var link = event.link;
+                window.location.href = window.location.href = "/add_event_page?title=" + title + "&start=" + start + "&end=" + end;
+            },
+                editable:true,
+                eventResize:function(event)
+                {
+                    var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+                    var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+                    var title = event.title;
+                    var id = event.id;
+                    $.ajax({
+                        url:"/update_event",
+                        type:"POST",
+                        data:{title:title, start:start, end:end, id:id},
+                        success:function()
+                        {
+                            calendar.fullCalendar('refetchEvents');
+                        }
+                    })
+                },
+                eventDrop:function(event)
+                {
+                    var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+                    var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+                    var title = event.title;
+                    var id = event.id;
+                    $.ajax({
+                        url:"/update_event",
+                        type:"POST",
+                        data:{title:title, start:start, end:end, id:id},
+                        success:function()
+                        {
+                            calendar.fullCalendar('refetchEvents');
+                        }
+                    });
+                },
+                eventClick: function(event) {
+                    var id = event.id;
+                    var title = event.title;
+                    var location = event.location;
+                    var start = moment(event.start).format('YYYY-MM-DD HH:mm:ss');
+                    var end = moment(event.end).format('YYYY-MM-DD HH:mm:ss');
+                    var link = event.link;
+                    window.location.href = "/event_docent/" + id + "?title=" + title + "&start=" + start + "&end=" + end + "&link=" + link + "&location=" + location;
+                  }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="logo">
+        <img src="/static/images/hr_logo2.png">
+      </div>
+      
+    <div id='calendar'></div>
+    <br>
+    <button type="button" onclick="window.location.href='/hometeacher'" style="margin-left: 510px;">Back to home</button>
+    <button onclick="goBack()">Go Back</button>
+    <script>
+    function goBack() {
+      window.history.back();}
+    </script>
+    <button type="button" onclick="window.location.href='/logout'">Logout</button>
+
+</body>
+</html>

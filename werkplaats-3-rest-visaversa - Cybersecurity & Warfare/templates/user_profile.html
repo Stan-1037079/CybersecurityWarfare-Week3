@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/search_results.css') }}">
+    </head>
+    <body>
+
+      <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 8px;
+          margin: 0 auto;
+        }
+        th, td {
+          text-align: left;
+        }
+        thead tr {
+          background-color: grey;
+        }
+      </style>
+    <h2>  {{ user[2] }} {{ user[3] }} Profile</h2>
+    <!--  code for displaying user information goes here -->
+     <!-- USER -->
+     {{ user[0] }}
+     {{ user[2] }}
+     {{ user[3] }}
+     {{ user[4] }}
+     {{ user[5] }}
+
+
+       <!-- ATTENDANCE-->
+    <table>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>checktime</th>
+          <th>persoon_id</th>
+          <th>event_id</th>
+          <th>Class</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for attendance in attendance %}
+          <tr>
+            <td>{{ attendance[0] }}</td>
+            <td>{{ attendance[1] }}</td>
+            <td>{{ attendance[2] }}</td>
+            <td>{{ attendance[3] | join_tables }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+    
+  <!--<button onclick="window.location.href = '/home';">Back to Home</button>-->
+  <button onclick="goBack()">Go Back</button>
+    <script>
+    function goBack() {
+      window.history.back();}
+    </script>
+  </body>
+</html>

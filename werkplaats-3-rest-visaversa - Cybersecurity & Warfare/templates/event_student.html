@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <link href='/static/css/event_details.css' rel='stylesheet'>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+  <title>Event Details</title>
+</head>
+<body>
+  <h1>Event Details for ID {{event_id}}</h1>
+  <strong>Title:</strong> <span id="event-title"></span><br>
+  <strong>Location:</strong> <span id="event-location"></span><br>
+  <strong>Start Time:</strong> <span id="event-start"></span><br>
+  <strong>End Time:</strong> <span id="event-end"></span><br>
+  <strong>Link:</strong> <span id="event-link"></span>
+
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var eventTitle = urlParams.get('title');
+    var eventLocation = urlParams.get('location')
+    var eventStart = urlParams.get('start');
+    var eventEnd = urlParams.get('end');
+    var eventLink = urlParams.get('link');
+    
+    document.getElementById('event-title').textContent = eventTitle;
+    document.getElementById('event-location').textContent = eventLocation;
+    document.getElementById('event-start').textContent = eventStart;
+    document.getElementById('event-end').textContent = eventEnd;
+    document.getElementById('event-link').textContent = eventLink;
+  </script>
+  <script>
+    function clickButton() {
+      var username = '{{ username }}';
+      console.log('Username:', username);
+      $.ajax({
+          type: 'POST',
+          url: '/checkinbutton',
+          data: {'username': username},
+          success: function(response) {
+              alert('Successfully checked-in!');
+              var clickedUserList = document.getElementById('clicked-user-list');
+              var li = document.createElement('li');
+              li.innerText = username;
+              clickedUserList.appendChild(li);
+          },
+          error: function(error) {
+              alert('Error: ' + error.responseText);
+          }
+      });
+    }  
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('.check-in-btn').on('click', function() {
+        var eventID = $(this).data('event-id');
+        var studentName = $('#studentName').val();
+        var otherDetails = '';
+      
+        var checkInData = {
+          eventID: eventID,
+          studentName: studentName,
+          otherDetails: otherDetails
+        };
+        $.ajax({
+          url: '/checkinsystem',
+          type: 'POST',
+          data: checkInData,
+          success: function(response) {
+            
+            alert(response.message);
+            
+            var clickedUserList = $('#checkedInStudents');
+            clickedUserList.empty();
+            
+            for (var i = 0; i < response.students.length; i++) {
+              var student = response.students[i];
+              var li = $('<li>').text(student);
+              clickedUserList.append(li);
+            }
+          },
+          error: function(error) {
+            
+            console.log(error);
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      function fetchCheckedInStudents() {
+        var eventID = {{ event_id }};
+        $.ajax({
+          type: 'POST',
+          url: '/get_checked_in_students',
+          data: {'event_id': eventID},
+          success: function(response) {
+            var checkedInStudentsList = $('#checkedInStudents');
+            checkedInStudentsList.empty();
+            for (var i = 0; i < response.checked_in_students.length; i++) {
+              var student = response.checked_in_students[i];
+              checkedInStudentsList.append('<li>' + student + '</li>');
+            }
+          },
+          error: function(error) {
+            console.log('Error:', error);
+          }
+        });
+      }
+      fetchCheckedInStudents();
+      setInterval(fetchCheckedInStudents, 1000); // Dit is de tijd in milliseconden (verversing - 1000 = 1 seconde)
+    });
+    </script>
+
+  <div id="studentList">
+    <h3>Checked-in Students:</h3>
+    <ul id="checkedInStudents">
+    </ul>
+  </div>
+  
+  <div class="event">
+    <input type="text" id="studentName" placeholder="Enter your name">
+    <button class="check-in-btn" data-event-id="{{ event_id }}">Check-in</button>
+  </div>
+
+  <br><br>
+  <button onclick="window.location.href = '/calendarstudent';">Back to Calendar</button>
+
+  <!-- Old check-in button -->
+  <!-- <button onclick="clickButton()">Check in for this course</button> --> 
+  <!-- Old check-in button -->
+  
+  <!--<button onclick="window.location.href = '/calendarstudent';">Back to Calendar</button> -->
+  <!-- <button onclick="clickButton()">Check in for this course</button> -->
+  <button onclick="goBack()">Go Back</button>
+    <script>
+    function goBack() {
+      window.history.back();}
+    </script>
+</body>
+</html>

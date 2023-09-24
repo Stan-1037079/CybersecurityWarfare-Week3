@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/add_event_page.css">
+    <meta charset="utf-8">
+    <title>Add New Event</title>
+</head>
+<body>
+    <h1>Add New Event</h1>
+    <p>Fill out the form below to add a new event to the calendar.</p>
+    <p>Note: On default it puts the current local date and time. Change it to your desired day and time.</p>
+    <form action="/add_event" method="post">
+        <label for="title">📝Title:</label><br>
+        <input type="text" id="title" name="title" placeholder="Example: Werkplaats" size=50><br><br>
+        <label for="location">🗺️Location:</label><br>
+        <input type="text" id="location" name="location" placeholder="Example: MP.H05.050" size=50><br><br>
+        <label for="start">⏳Start date and time:</label><br>
+        <input type="datetime-local" id="start" name="start" value="{{ start }}"><br><br>
+        <label for="end">⏳End date and time:</label><br>
+        <input type="datetime-local" id="end" name="end" value="{{ end }}"><br><br>
+        <label for="link">🔗Link (optional):</label><br>
+        <input type="text" id="link" name="link" placeholder="Example: https://www.hogeschoolrotterdam.nl/" size=50><br><br>
+        <input type="submit" value="Submit Event">
+        <button type="button" onclick="window.location.href='/calendarteacheradmin'">Cancel</button>
+    </form>
+</body>
+</html>

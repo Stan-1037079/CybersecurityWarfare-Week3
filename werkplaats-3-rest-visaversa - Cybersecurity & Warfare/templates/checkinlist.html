@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checkin List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #table-container {
+      background-color: #d30f4c;
+      text-align: center;
+      margin: auto;
+      width: 50%;
+      padding: 10px;
+    }
+    
+    table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin: auto;
+    }
+    
+    tr {
+      display: table-row;
+    }
+    
+    th, td {
+      border: 1px solid black;
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      padding: 10px;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    body {
+      background-color: #d30f4c;
+    }
+    div {
+      margin: auto;
+      text-align: center;
+    }
+  </style>
+  <script>
+    $(document).ready(function() {
+      setInterval(function() {
+        $.getJSON('/api/checkinlist', function(data) {
+          var tableBody = $('#table-body');
+          tableBody.empty();
+          data.checkins.forEach(function(checkin) {
+            var row = $('<tr>');
+            row.append($('<td>').text(checkin[0]));
+            row.append($('<td>').text(checkin[1]));
+            tableBody.append(row);
+          });
+        });
+      }, 1000);
+    });
+  </script>
+</head>
+<body>
+    <div id="table-container">
+      <h1>Check-in List</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>User ID:</th>
+            <th>Check-in Time:</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <div>
+    <button onclick="window.location.href = '/home';">Back to Home</button>
+    </div>
+  </body>
+  </html>
