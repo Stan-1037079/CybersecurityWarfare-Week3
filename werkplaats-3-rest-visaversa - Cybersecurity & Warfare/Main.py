@@ -9,8 +9,18 @@ from email.mime.text import MIMEText
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+from flask_talisman import Talisman
 
 app = Flask(__name__)
+csp = {
+    'default-src': "'self'",
+    'style-src': ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+    'style-src-elem': ["'self'", "https://cdnjs.cloudflare.com", "'unsafe-inline'"],
+    'script-src': ["'self'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "'unsafe-inline'"],
+}
+
+Talisman(app, content_security_policy=csp)
+
 app.secret_key = 'supersecretkey'
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
