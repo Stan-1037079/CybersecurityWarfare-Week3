@@ -25,6 +25,7 @@ app.secret_key = 'supersecretkey'
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SERVER_NAME'] = None
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
