@@ -19,7 +19,7 @@ csp = {
     'script-src': ["'self'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "'unsafe-inline'"],
 }
 
-Talisman(app, content_security_policy=csp)
+Talisman(app, content_security_policy=csp, frame_options='DENY')
 
 app.secret_key = 'supersecretkey'
 cors = CORS(app)
